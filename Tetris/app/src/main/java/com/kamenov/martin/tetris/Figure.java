@@ -43,7 +43,7 @@ public class Figure implements GameObject {
         }
     }
 
-    public boolean canGoDown() {
+    private boolean canGoDown() {
         for (int i = 0; i < squares.size(); i++) {
             if(!squares.get(i).canGoDown(this)) {
                 return false;
@@ -53,7 +53,30 @@ public class Figure implements GameObject {
         return true;
     }
 
+    private boolean canGoLeft() {
+        for (int i = 0; i < squares.size(); i++) {
+            if(!squares.get(i).canGoLeft(this)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean canGoRight() {
+        for (int i = 0; i < squares.size(); i++) {
+            if(!squares.get(i).canGoRight(this)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void move(Direction direction, int step) {
+        if((direction == direction.LEFT && !canGoLeft() )||(direction == direction.RIGHT && !canGoRight())) {
+            return;
+        }
         for (int i = 0; i < squares.size(); i++) {
             Constants.MATRIX[squares.get(i).row()][squares.get(i).col()] = false;
             switch (direction) {

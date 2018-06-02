@@ -29,10 +29,14 @@ public class FigureCreator {
         Random rnd = new Random();
         int number = rnd.nextInt(numbers.length);
         int colorNumber = rnd.nextInt(Constants.COLORS.length);
+        if(colorNumber%2==1) {
+            colorNumber--;
+        }
         ArrayList<Square> list = new ArrayList<>();
         int color = Constants.COLORS[colorNumber];
+        int insideColor = Constants.COLORS[colorNumber + 1];
         for(int i = 0; i < numbers[number].length; i++) {
-            list.add(new Square(numbers[number][i][0], numbers[number][i][1], color));
+            list.add(new Square(numbers[number][i][0], numbers[number][i][1], color, insideColor));
         }
 
         return new Figure(list);

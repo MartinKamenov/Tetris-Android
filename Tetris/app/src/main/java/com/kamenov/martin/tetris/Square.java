@@ -11,13 +11,17 @@ public class Square implements GameObject{
     private int x;
     private int y;
     private Paint paint;
+    private Paint insidePaint;
 
-    public Square(int x, int y, int color) {
+    public Square(int x, int y, int color, int secondColor) {
         this.x = x;
         this.y = y;
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(color);
+        paint.setColor(secondColor);
+        insidePaint = new Paint();
+        insidePaint.setStyle(Paint.Style.FILL);
+        insidePaint.setColor(color);
     }
 
     public int getX() {
@@ -39,6 +43,8 @@ public class Square implements GameObject{
     @Override
     public void draw(Canvas canvas) {
         canvas.drawRect(x, y, x + Constants.CELL_WIDTH, y + Constants.CELL_HEIGHT, paint);
+        canvas.drawRect(x, y,
+                x + ((Constants.CELL_WIDTH / 8) * 7), y + ((Constants.CELL_HEIGHT / 8) * 7), insidePaint);
     }
 
     @Override
@@ -77,6 +83,38 @@ public class Square implements GameObject{
         if(Constants.MATRIX[row() + 1][col()]) {
             for(int i = 0; i < figure.squares.size(); i++) {
                 if(((row() + 1) == figure.squares.get(i).row()) && (col() == figure.squares.get(i).col())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean canGoLeft(Figure figure) {
+        if(col() - 1 < 0) {
+            return false;
+        }
+        if(Constants.MATRIX[row()][col() - 1]) {
+            for(int i = 0; i < figure.squares.size(); i++) {
+                if(((col() - 1) == figure.squares.get(i).col()) && (row() == figure.squares.get(i).row())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean canGoRight(Figure figure) {
+        if(col() + 1 >= Constants.COLS) {
+            return false;
+        }
+        if(Constants.MATRIX[row()][col() + 1]) {
+            for(int i = 0; i < figure.squares.size(); i++) {
+                if(((col() + 1) == figure.squares.get(i).col()) && (row() == figure.squares.get(i).row())) {
                     return true;
                 }
             }
