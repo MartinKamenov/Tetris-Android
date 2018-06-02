@@ -2,12 +2,12 @@ package com.kamenov.martin.tetris;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Martin on 30.5.2018 г..
@@ -15,26 +15,30 @@ import java.util.List;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, GameObject {
     private MyThread thread;
-    private boolean[][] matrix;
     private Figure figure;
-    private ArrayList<Figure> figures;
+    private ArrayList<Square> squares;
     private Grid grid;
     private FigureCreator figureCreator;
+    private float x1 = 0;
+    private float x2 = 0;
+    private float y1 = 0;
+    private float y2 = 0;
 
     public GamePanel(Context context) {
         super(context);
         Constants.MATRIX = new boolean[Constants.ROWS][Constants.COLS];
         figureCreator = new FigureCreator();
-        figures = new ArrayList<>();
+        squares = new ArrayList<>();
         figure = figureCreator.createFigure();
-        figures.add(figure);
+        for(int i = 0; i < figure.squares.size(); i++){
+            squares.add(figure.squares.get(i));
+        }
         grid = new Grid();
 
 
         getHolder().addCallback(this);
 
         setFocusable(true);
-        //figure = new Figure();
     }
 
     @Override
@@ -58,14 +62,94 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Ga
     public void update() {
         figure.update();
         if(!figure.isGoingDown()) {
+            checkForRows();
             figure = figureCreator.createFigure();
+            for(int i = 0; i < figure.squares.size(); i++){
+                squares.add(figure.squares.get(i));
+            }
+        }
+    }
+
+
+    private void checkForRows() {
+        for(int i = 0; i < Constants.MATRIX.length; i++) {
+            boolean rowIsFull = true;
+            for(int j = 0; j < Constants.MATRIX[i].length; j++) {
+                if(!Constants.MATRIX[i][j]) {
+                    rowIsFull = false;
+                    break;
+                }
+            }
+            if(rowIsFull) {
+                removeRow(i);
+            }
+        }
+    }
+
+    private void removeRow(int row) {
+        for(int i = 0; i < squares.size(); i++) {
+            Constants.MATRIX[squares.get(i).row()][squares.get(i).col()] = false;
+            if(squares.get(i).row() == row) {
+                squares.remove(i);
+                i--;
+            }
+            else if(squares.get(i).row() < row) {
+                squares.get(i).down(1);
+            }
+        }
+
+        for(int i = 0; i < squares.size(); i++) {
+            Constants.MATRIX[squares.get(i).row()][squares.get(i).col()] = true;
         }
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        figure.draw(canvas);
+        Paint backgroundPaint = new Paint();
+        backgroundPaint.setStyle(Paint.Style.FILL);
+        backgroundPaint.setColor(Constants.BACKGROUND_COLOR);
+        canvas.drawRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, backgroundPaint);
+
+        for(int i = 0; i < squares.size(); i++) {
+            squares.get(i).draw(canvas);
+        }
         grid.draw(canvas);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                y1 = event.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                y2 = event.getY();
+                float deltaX = x2 - x1;
+                float deltaY = y2 - y1;
+                if(Math.abs(deltaX)>Math.abs(deltaY)) {
+                    if(deltaX > 0) {
+                        figure.move(Direction.RIGHT, 1);
+                    }
+                    else if(deltaX < 0) {
+                        figure.move(Direction.LEFT, 1);
+                    }
+                }
+                else if(Math.abs(deltaY)>=Math.abs(deltaX)) {
+                    if(deltaY > 0) {
+                        figure.rotate(Direction.COUNTER_CLOCKWISE);
+                    }
+                    else if(deltaY < 0) {
+                        figure.rotate(Direction.CLOCKWISE);
+                    }
+                }
+
+                break;
+        }
+        return true;
     }
 }

@@ -12,12 +12,12 @@ public class Square implements GameObject{
     private int y;
     private Paint paint;
 
-    public Square(int x, int y) {
+    public Square(int x, int y, int color) {
         this.x = x;
         this.y = y;
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Constants.SQUARE_COLOR);
+        paint.setColor(color);
     }
 
     public int getX() {
@@ -26,6 +26,14 @@ public class Square implements GameObject{
 
     public int getY() {
         return this.y;
+    }
+
+    public int col() {
+        return this.x / Constants.CELL_WIDTH;
+    }
+
+    public int row() {
+        return this.y / Constants.CELL_HEIGHT;
     }
 
     @Override
@@ -38,7 +46,43 @@ public class Square implements GameObject{
 
     }
 
-    public void down() {
-        y = y + Constants.CELL_HEIGHT;
+    public void down(int step) {
+        y = y + step * Constants.CELL_HEIGHT;
+    }
+
+    public void left(int step) {
+        x = x - step * Constants.CELL_WIDTH;
+    }
+
+    public void up(int step) {
+        y = y - step * Constants.CELL_HEIGHT;
+    }
+
+    public void right(int step) {
+        x = x + step * Constants.CELL_WIDTH;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public boolean canGoDown(Figure figure) {
+        if(row() + 1 >= Constants.ROWS) {
+            return false;
+        }
+        if(Constants.MATRIX[row() + 1][col()]) {
+            for(int i = 0; i < figure.squares.size(); i++) {
+                if(((row() + 1) == figure.squares.get(i).row()) && (col() == figure.squares.get(i).col())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return true;
     }
 }

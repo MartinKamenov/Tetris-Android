@@ -1,7 +1,6 @@
 package com.kamenov.martin.tetris;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -10,43 +9,30 @@ import java.util.Random;
 
 public class FigureCreator {
     private int[][][] numbers = {
-            {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0},
-                    {(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}},
-            {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0},
-                    {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}},
+            {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT},
+                    {(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0}},
+            {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT},
+                    {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0}},
             {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2 - 2) * Constants.CELL_WIDTH, 0},
                     {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, 0}},
-            {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0},
-                    {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}},
+            {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT},
+                    {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0}},
             {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0},
                     {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}},
             {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0},
                     {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}},
-            {{(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0},
-                    {(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}},
+            {{(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT},
+                    {(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0}},
     };
-    public FigureCreator() {
-        // Square type
-
-        // Z type
-
-        // Line type
-
-        // T type
-
-        // L type
-
-        // L type mirror
-
-        // z type mirror
-    }
 
     public Figure createFigure() {
         Random rnd = new Random();
         int number = rnd.nextInt(numbers.length);
+        int colorNumber = rnd.nextInt(Constants.COLORS.length);
         ArrayList<Square> list = new ArrayList<>();
+        int color = Constants.COLORS[colorNumber];
         for(int i = 0; i < numbers[number].length; i++) {
-            list.add(new Square(numbers[number][i][0], numbers[number][i][1]));
+            list.add(new Square(numbers[number][i][0], numbers[number][i][1], color));
         }
 
         return new Figure(list);
