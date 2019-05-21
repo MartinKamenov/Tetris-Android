@@ -23,6 +23,7 @@ public class GameActivity extends AppCompatActivity {
         Constants.SQUARE_COLOR = Color.BLUE;
         Constants.GRID_COLOR = Color.BLACK;
         Constants.BACKGROUND_COLOR = Color.WHITE;
+        Constants.SCORE_COLOR = Color.parseColor("#60000000");
 
         setContentView(new GamePanel(this));
     }

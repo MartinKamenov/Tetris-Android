@@ -2,6 +2,7 @@ package com.kamenov.martin.tetris;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -23,6 +24,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Ga
     private float x2 = 0;
     private float y1 = 0;
     private float y2 = 0;
+    private int score;
+    private Paint scorePaint;
 
     public GamePanel(Context context) {
         super(context);
@@ -32,10 +35,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Ga
         figure = figureCreator.createFigure();
         for(int i = 0; i < figure.squares.size(); i++){
             squares.add(figure.squares.get(i));
+            Constants.MATRIX[figure.squares.get(i).row()][figure.squares.get(i).col()] = true;
         }
         grid = new Grid();
-
-
+        score = 0;
+        scorePaint = new Paint();
+        scorePaint.setColor(Constants.SCORE_COLOR);
+        scorePaint.setStyle(Paint.Style.FILL);
+        scorePaint.setStrokeWidth(10);
+        scorePaint.setTextSize(50);
         getHolder().addCallback(this);
 
         setFocusable(true);
@@ -63,6 +71,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Ga
         figure.update();
         if(!figure.isGoingDown()) {
             checkForRows();
+            if(checkIfGameOver()) {
+                stopGame();
+                return;
+            }
             figure = figureCreator.createFigure();
             for(int i = 0; i < figure.squares.size(); i++){
                 squares.add(figure.squares.get(i));
@@ -82,8 +94,25 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Ga
             }
             if(rowIsFull) {
                 removeRow(i);
+                score++;
             }
         }
+    }
+
+    private boolean checkIfGameOver() {
+        for(int i = 0; i < 2; i++) {
+            for(int j = 0; j < Constants.MATRIX[i].length; j++) {
+                if(Constants.MATRIX[i][j]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void stopGame() {
+        thread.setRunning(false);
     }
 
     private void removeRow(int row) {
@@ -115,6 +144,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Ga
             squares.get(i).draw(canvas);
         }
         grid.draw(canvas);
+
+        canvas.drawText("Score: " + score, 0, 50, scorePaint);
     }
 
     @Override
@@ -141,7 +172,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback, Ga
                 }
                 else if(Math.abs(deltaY)>=Math.abs(deltaX)) {
                     if(deltaY > 0) {
-                        figure.rotate(Direction.COUNTER_CLOCKWISE);
+                        while(figure.canGoDown()) {
+                            figure.move(Direction.DOWN, 1);
+                        }
+                        //figure.move(Direction.DOWN, 1);
+                        //figure.rotate(Direction.COUNTER_CLOCKWISE);
                     }
                     else if(deltaY < 0) {
                         figure.rotate(Direction.CLOCKWISE);

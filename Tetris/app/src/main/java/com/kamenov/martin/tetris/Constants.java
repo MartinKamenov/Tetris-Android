@@ -22,6 +22,7 @@ public class Constants {
     public static int SQUARE_COLOR;
     public static int GRID_COLOR;
     public static int BACKGROUND_COLOR;
+    public static int SCORE_COLOR;
     public static int[] COLORS = {
             Color.parseColor("#F52C6E"), Color.parseColor("#c61d55"),
             Color.parseColor("#0291DB"), Color.parseColor("#0075b2"),

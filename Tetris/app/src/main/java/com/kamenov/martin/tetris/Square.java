@@ -123,4 +123,20 @@ public class Square implements GameObject{
 
         return true;
     }
+
+    public boolean canGoUp(Figure figure) {
+        if(row() - 1 < 0) {
+            return false;
+        }
+        if(Constants.MATRIX[row() - 1][col()]) {
+            for(int i = 0; i < figure.squares.size(); i++) {
+                if(((row() - 1) == figure.squares.get(i).row()) && (col() == figure.squares.get(i).col())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        return true;
+    }
 }

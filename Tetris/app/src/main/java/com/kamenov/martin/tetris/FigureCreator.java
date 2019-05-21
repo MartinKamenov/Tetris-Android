@@ -22,7 +22,7 @@ public class FigureCreator {
             {{(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0},
                     {(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}},
             {{(Constants.COLS / 2 + 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT},
-                    {(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, Constants.CELL_HEIGHT}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0}},
+                    {(Constants.COLS / 2 - 1) * Constants.CELL_WIDTH, 0}, {(Constants.COLS / 2) * Constants.CELL_WIDTH, 0}},
     };
 
     public Figure createFigure() {
