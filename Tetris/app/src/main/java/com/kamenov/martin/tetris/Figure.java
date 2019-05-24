@@ -113,9 +113,11 @@ public class Figure implements GameObject {
     }
 
     private void rotateLeft() {
+        if(!canFigureRotateLeft()) {
+            return;
+        }
         for(int i = 0; i < squares.size(); i++) {
             Constants.MATRIX[squares.get(i).row()][squares.get(i).col()] = false;
-
 
             int newRow = squares.get(i).col() - minx;
             int newCol = -squares.get(i).row() + miny;
@@ -125,6 +127,39 @@ public class Figure implements GameObject {
             squares.get(i).setX(newCol * Constants.CELL_WIDTH);
             squares.get(i).setY(newRow * Constants.CELL_HEIGHT);
         }
+    }
+
+    private boolean canFigureRotateLeft() {
+        boolean canRotateLeft = true;
+        for(int i = 0; i < squares.size(); i++) {
+
+            int newRow = squares.get(i).col() - minx;
+            int newCol = -squares.get(i).row() + miny;
+            newRow += miny;
+            newCol += minx;
+
+            if(newRow < 0 || newRow >= Constants.ROWS ||
+                newCol < 0 || newCol >= Constants.COLS) {
+                return false;
+            }
+
+            if(Constants.MATRIX[newRow][newCol]) {
+                boolean isFromCurrentFigure = false;
+                for(int j = 0; j < squares.size(); j++) {
+                    if(squares.get(j).getX() / Constants.CELL_WIDTH == newCol &&
+                        squares.get(j).getY() / Constants.CELL_HEIGHT == newRow) {
+                        isFromCurrentFigure = true;
+                    }
+                }
+
+                if(!isFromCurrentFigure) {
+                    canRotateLeft = false;
+                    break;
+                }
+            }
+        }
+
+        return canRotateLeft;
     }
 
     private void rotateRight() {
