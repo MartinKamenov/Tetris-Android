@@ -113,96 +113,17 @@ public class Figure implements GameObject {
     }
 
     private void rotateLeft() {
-        ArrayList<int[]> coordinates = new ArrayList<>();
-        ArrayList<Direction> directions = new ArrayList<>();
-
-        boolean outOfRange = false;
-        boolean colideWithFigure = false;
-        boolean outOfRangeIteration = false;
-
         for(int i = 0; i < squares.size(); i++) {
             Constants.MATRIX[squares.get(i).row()][squares.get(i).col()] = false;
-            outOfRangeIteration = false;
-            coordinates.add(new int[] {squares.get(i).getX(), squares.get(i).getY()});
+
 
             int newRow = squares.get(i).col() - minx;
             int newCol = -squares.get(i).row() + miny;
             newRow += miny;
             newCol += minx;
 
-            if(newRow < 0) {
-                directions.add(Direction.DOWN);
-                outOfRange = true;
-                outOfRangeIteration = true;
-            }
-
-            if(newRow >= Constants.ROWS) {
-                directions.add(Direction.UP);
-                outOfRange = true;
-                outOfRangeIteration = true;
-            }
-
-            if(newCol < 0) {
-                directions.add(Direction.RIGHT);
-                outOfRange = true;
-                outOfRangeIteration = true;
-            }
-
-            if(newCol >= Constants.COLS) {
-                directions.add(Direction.LEFT);
-                outOfRange = true;
-                outOfRangeIteration = true;
-            }
-
-            if(!outOfRangeIteration && Constants.MATRIX[newRow][newCol]) {
-                colideWithFigure = true;
-            }
-
             squares.get(i).setX(newCol * Constants.CELL_WIDTH);
             squares.get(i).setY(newRow * Constants.CELL_HEIGHT);
-        }
-
-        if(!outOfRange && colideWithFigure) {
-            returnState(coordinates);
-            return;
-        }
-
-        if(outOfRange) {
-            for (int i = 0; i < directions.size(); i++) {
-                for (int j = 0; j < squares.size(); j++) {
-                    Square square = squares.get(j);
-                    switch (directions.get(i)) {
-                        case UP:
-                            square.setY(square.getY() - Constants.CELL_HEIGHT);
-                            break;
-                        case DOWN:
-                            square.setY(square.getY() + Constants.CELL_HEIGHT);
-                            break;
-                        case LEFT:
-                            square.setX(square.getX() - Constants.CELL_WIDTH);
-                            break;
-                        case RIGHT:
-                            square.setX(square.getX() + Constants.CELL_WIDTH);
-                            break;
-                    }
-                }
-            }
-        }
-        outOfRange = false;
-        colideWithFigure = false;
-
-        for(int i = 0; i < squares.size(); i++) {
-            if(squares.get(i).row() < 0 || squares.get(i).row() >= Constants.ROWS||
-                    squares.get(i).col() < 0 || squares.get(i).col() >= Constants.COLS) {
-                outOfRange = true;
-                break;
-            } else if(Constants.MATRIX[squares.get(i).row()][squares.get(i).col()]){
-                colideWithFigure = true;
-            }
-        }
-
-        if(outOfRange || colideWithFigure) {
-            returnState(coordinates);
         }
     }
 
