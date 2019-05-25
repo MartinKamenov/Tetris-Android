@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Views.MenuActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,7 +16,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:weightSum="2"
             android:orientation="horizontal">
             <TextView
@@ -37,7 +33,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:weightSum="2"
             android:orientation="horizontal">
             <TextView
@@ -55,7 +50,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:weightSum="2"
             android:orientation="horizontal">
             <TextView
@@ -71,10 +65,9 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <Button
+            android:theme="@style/SuccessButton"
             android:id="@+id/start_game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Start Game"/>
     </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
