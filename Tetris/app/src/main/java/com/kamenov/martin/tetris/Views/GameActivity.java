@@ -1,9 +1,12 @@
-package com.kamenov.martin.tetris;
+package com.kamenov.martin.tetris.Views;
 
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+
+import com.kamenov.martin.tetris.Constants;
+import com.kamenov.martin.tetris.GamePanel;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -15,11 +18,10 @@ public class GameActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels - 40;
-        Constants.COLS = 10;
-        Constants.ROWS = 20;
+
         Constants.CELL_WIDTH = Constants.SCREEN_WIDTH/Constants.COLS;
         Constants.CELL_HEIGHT = Constants.SCREEN_HEIGHT/Constants.ROWS;
-        Constants.GAMESPEED = 300;
+
         Constants.SQUARE_COLOR = Color.BLUE;
         Constants.GRID_COLOR = Color.BLACK;
         Constants.BACKGROUND_COLOR = Color.WHITE;
